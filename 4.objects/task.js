@@ -3,7 +3,6 @@ function Student(name, gender, age) {
   this.gender = gender;
   this.age = age;
   this.marks = [];
-  this.subject = undefined;
 }
 
 Student.prototype.setSubject = function (subjectName) {
@@ -18,21 +17,15 @@ Student.prototype.addMarks = function (...marksToAdd) {
 };
 
 Student.prototype.getAverage = function () {
-  if (!this.hasOwnProperty("marks") || this.marks.length === 0) {
-    return 0;
-  }
-  const sum = this.marks.reduce((acc, m) => acc + m, 0);
-  return sum / this.marks.length;
+  return this?.marks
+    ? this.marks.reduce((avg, mark, idx, arr) => avg + mark / arr.length, 0)
+    : 0;
 };
 
 Student.prototype.exclude = function (reason) {
-  if (Object.prototype.hasOwnProperty.call(this, "subject")) {
-    delete this.subject;
-  }
-  if (Object.prototype.hasOwnProperty.call(this, "marks")) {
-    delete this.marks;
-  }
   this.excluded = reason;
+  delete this.subject;
+  delete this.marks;
 };
 
 let student1 = new Student("Василиса", "женский", 19);
