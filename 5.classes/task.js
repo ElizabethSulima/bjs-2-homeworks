@@ -1,29 +1,29 @@
 class PrintEditionItem {
+  #state;
   constructor(name, releaseDate, pagesCount) {
     this.name = name;
     this.releaseDate = releaseDate;
     this.pagesCount = pagesCount;
-    this._state = 100;
+    this.#state = 100;
     this.type = null;
   }
 
   set state(newState) {
-    let value = Number(newState);
+    this.#state = value;
     if (value < 0) {
-      this._state = 0;
-    } else if (value > 100) {
-      this._state = 100;
-    } else {
-      this._state = value;
+      this.#state = 0;
+    }
+    if (value > 100) {
+      this.#state = 100;
     }
   }
 
   get state() {
-    return this._state;
+    return this.#state;
   }
 
   fix() {
-    this.state = this._state * 1.5;
+    this.state = this.#state * 1.5;
   }
 }
 
@@ -86,24 +86,20 @@ class Library {
   }
 
   addBook(book) {
-    if (book && typeof book.state === "number" && book.state > 30) {
+    if (book instanceof PrintEditionItem && book.state > 30) {
       this.books.push(book);
     }
   }
 
   findBookBy(type, value) {
-    for (let book of this.books) {
-      if (book[type] !== undefined && book[type] === value) {
-        return book;
-      }
-    }
-    return null;
+    const book = this.books.find((book) => book[type] === value);
+    return book ? book : null;
   }
 
   giveBookByName(bookName) {
-    const index = this.books.findIndex((b) => b.name === bookName);
-    if (index !== -1) {
-      const [book] = this.books.splice(index, 1);
+    const book = this.findBookBy("name", bookName);
+    if (book) {
+      this.books = this.books.filter((items) => items.name !== bookName);
       return book;
     }
     return null;
