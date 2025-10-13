@@ -9,7 +9,7 @@ class PrintEditionItem {
   }
 
   set state(newState) {
-    this.#state = value;
+    this.#state = newState;
     if (value < 0) {
       this.#state = 0;
     }
