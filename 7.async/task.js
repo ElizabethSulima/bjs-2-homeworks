@@ -4,18 +4,18 @@ class AlarmClock {
     this.intervalId = null;
   }
 
-  addClock(time, cb) {
-    if (time === undefined || cb === undefined) {
+  addClock(time, callback) {
+    if (time === undefined || callback === undefined) {
       throw new Error("Отсутствуют обязательные аргументы");
     }
 
-    if (this.alarmCollection.find((alarm) => alarm.time === time)) {
+    if (this.alarmCollection.some((alarm) => alarm.time === time)) {
       console.warn("Уже присутствует звонок на это же время");
     }
 
     const newAlarm = {
-      time: time,
-      callback: cb,
+      time,
+      callback,
       canCall: true,
     };
 
@@ -33,9 +33,10 @@ class AlarmClock {
 
   getCurrentFormattedTime() {
     const now = new Date();
-    const hours = now.getHours().toString().padStart(2, "0");
-    const minutes = now.getMinutes().toString().padStart(2, "0");
-    return `${hours}:${minutes}`;
+    return now.toLocaleString("ru-Ru", { hour: "2-digit", minute: "2-digit" });
+    // const hours = now.getHours().toString().padStart(2, "0");
+    // const minutes = now.getMinutes().toString().padStart(2, "0");
+    // return `${hours}:${minutes}`;
   }
 
   start() {
@@ -48,11 +49,7 @@ class AlarmClock {
 
       this.alarmCollection.forEach((alarm) => {
         if (alarm.time === currentTime && alarm.canCall === true) {
-          try {
-            alarm.callback();
-          } catch (e) {
-            console.error("Ошибка в коллбеке будильника:", e);
-          }
+          alarm.callback();
           alarm.canCall = false;
         }
       });
