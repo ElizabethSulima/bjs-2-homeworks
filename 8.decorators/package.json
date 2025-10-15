@@ -1,0 +1,16 @@
+{
+  "name": "8.decorators",
+  "version": "1.0.0",
+  "description": "Напишите усовершенствованный кеширующий декоратор `cachingDecoratorNew`, аналогичный рассмотренному на лекции, так, чтобы он кешировал только **последние пять различных** вызовов функции, то есть чтобы кеш мог хранить только пять значений.",
+  "main": "task.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "js-md5": "^0.8.3"
+  }
+}
